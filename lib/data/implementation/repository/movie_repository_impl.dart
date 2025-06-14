@@ -67,18 +67,47 @@ class MovieRepositoryImpl extends BaseRepository implements MovieRepository {
 
   @override
   Future<Movies> getMovies(MovieQuery query) {
+    if (query.keyword?.isNotEmpty ?? false) {
     return processApiCall(
       module: "movie",
       function: "getMovies",
       call: () async {
-        if (query.keyword?.isNotEmpty ?? false) {
           final response = await _api.searchMovie(query.toRequest().toJson());
           return response.toModel();
-        } else {
+        }
+      );
+    }
+
+    return executeProcess(
+      apiProcess: () async {
+        return processApiCall(
+          module: "movie",
+          function: "api.getMovies",
+          call: () async {
           final response = await _api.getNowPlayingMovies(query.toRequest().toJson());
           return response.toModel();
         }
-      }
+        );
+      },
+      localProcess: () async {
+        return processBox(
+          module: "movie",
+          function: "database.getMovies",
+          call: () async {
+            final result = await _nowPlayingDatabase.getNowPlayingMovies(query.page);
+            return result?.toModel();
+          }
+        );
+      },
+      saveToLocal: (data) async {
+        processBox(
+          module: "movie",
+          function: "database.addNowPlayingMovies",
+          call: () async {
+            await _nowPlayingDatabase.addNowPlayingMovies(query.page, MoviesEntity.fromModel(data));
+          }
+        );
+      },
     );
   }
 
