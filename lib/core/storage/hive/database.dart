@@ -9,16 +9,11 @@ class Database<T> {
   static Future<Database<T>> init<T>({
     required String name,
     required OpenDatabase<T> openDatabase,
-    TypeAdapter<T>? adapter,
     HiveAesCipher? encryptionCipher,
   }) => openDatabase(
     module: "STORAGE",
     function: "OPEN_DATABASE",
     call: () async {
-      if (adapter != null && !Hive.isAdapterRegistered(adapter.typeId)) {
-        Hive.registerAdapter(adapter);
-      }
-
       final box = await Hive.openBox<T>(
         name,
         encryptionCipher: encryptionCipher,

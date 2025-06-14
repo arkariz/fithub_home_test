@@ -1,5 +1,6 @@
 library;
 
+export 'di/preference_module.dart';
 export 'di/storage_module.dart';
 export 'di/storage_qualifier.dart';
 export 'hive/database.dart';
