@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fithub_home_test/data/implementation/remote/response/favorite_response.dart';
+import 'package:fithub_home_test/data/implementation/remote/response/movie_detail_response.dart';
 import 'package:fithub_home_test/data/implementation/remote/response/movies_response.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
@@ -30,5 +31,10 @@ abstract class MovieRemoteApi {
   @GET('/3/search/movie')
   Future<MoviesResponse> searchMovie(
     @Queries() Map<String, dynamic> query,
+  );
+
+  @GET('/3/movie/{id}')
+  Future<MovieDetailResponse> getMovieDetail(
+    @Path() int id,
   );
 }

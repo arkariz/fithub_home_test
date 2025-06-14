@@ -28,8 +28,14 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Future<MovieDetail> getMovieDetail(int id) {
-    // TODO: implement getMovieDetail
-    throw UnimplementedError();
+    return processApiCall(
+      module: "movie",
+      function: "getMovieDetail",
+      call: () async {
+        final response = await _api.getMovieDetail(id);
+        return response.toModel();
+      }
+    );
   }
 
   @override
