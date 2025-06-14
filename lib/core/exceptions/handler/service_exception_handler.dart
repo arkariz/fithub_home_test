@@ -18,7 +18,7 @@ Future<T> processApiCall<T>({
     module: module,
     layer: layer,
     function: function,
-    rules: _rules(module: module, function: function, layer: layer),
+    rules: (stackTrace) => _rules(module: module, function: function, layer: layer, stackTrace: stackTrace),
     call: call,
   );
 }
@@ -27,26 +27,36 @@ List<ExceptionRule> _rules({
   required String module,
   required String function,
   required ExceptionLayerCode layer,
+  required Object? stackTrace,
 }) => [
   NoInternetConnectionException.rule(
     module: module,
     layer: layer.code,
     function: function,
+    stackTrace: stackTrace,
   ),
   DecodeFailedException.rule(
     module: module,
     layer: layer.code,
     function: function,
+    stackTrace: stackTrace,
   ),
   ApiErrorException.rule(
     module: module,
     layer: layer.code,
     function: function,
+    stackTrace: stackTrace,
   ),
   UndefinedErrorResponseException.rule(
     module: module,
     layer: layer.code,
     function: function,
+    stackTrace: stackTrace,
   ),
-  GeneralException.rule(module: module, layer: layer.code, function: function),
+  GeneralException.rule(
+    module: module,
+    layer: layer.code,
+    function: function,
+    stackTrace: stackTrace,
+  ),
 ];

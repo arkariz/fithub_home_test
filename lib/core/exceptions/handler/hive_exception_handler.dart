@@ -19,7 +19,7 @@ Future<T> openBox<T>({
     module: module,
     layer: layer,
     function: function,
-    rules: _openRules(module: module, function: function, layer: layer),
+    rules: (stackTrace) => _openRules(module: module, function: function, layer: layer, stackTrace: stackTrace),
     call: call,
   );
 }
@@ -35,7 +35,7 @@ Future<T> processBox<T>({
     module: module,
     layer: layer,
     function: function,
-    rules: _operationRules(module: module, function: function, layer: layer),
+    rules: (stackTrace) => _operationRules(module: module, function: function, layer: layer, stackTrace: stackTrace),
     call: call,
   );
 }
@@ -44,11 +44,13 @@ List<ExceptionRule> _openRules({
   required String module,
   required String function,
   required ExceptionLayerCode layer,
+  required Object? stackTrace,
 }) => [
   LocalStorageAlreadyOpenedException.rule(
     module: module,
     layer: layer.code,
     function: function,
+    stackTrace: stackTrace,
   ),
 ];
 
@@ -56,26 +58,31 @@ List<ExceptionRule> _operationRules({
   required String module,
   required String function,
   required ExceptionLayerCode layer,
+  required Object? stackTrace,
 }) => [
   LocalStorageCorruptionException.rule(
     module: module,
     layer: layer.code,
     function: function,
+    stackTrace: stackTrace,
   ),
   LocalStorageClosedException.rule(
     module: module,
     layer: layer.code,
     function: function,
+    stackTrace: stackTrace,
   ),
   StorageFullException.rule(
     module: module,
     layer: layer.code,
     function: function,
+    stackTrace: stackTrace,
   ),
   DecodeFailedException.rule(
     module: module,
     layer: layer.code,
     function: function,
+    stackTrace: stackTrace,
   ),
-  GeneralException.rule(module: module, layer: layer.code, function: function),
+  GeneralException.rule(module: module, layer: layer.code, function: function, stackTrace: stackTrace),
 ];
