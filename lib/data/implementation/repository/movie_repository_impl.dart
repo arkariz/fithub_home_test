@@ -8,6 +8,7 @@ import 'package:fithub_home_test/data/api/repository/movie_repository.dart';
 import 'package:fithub_home_test/data/implementation/remote/remote_api/movie_remote_api.dart';
 import 'package:fithub_home_test/data/implementation/request_mapper/favorite_mapper.dart';
 import 'package:fithub_home_test/data/implementation/request_mapper/get_favorite_mapper.dart';
+import 'package:fithub_home_test/data/implementation/request_mapper/movie_mapper.dart';
 
 class MovieRepositoryImpl implements MovieRepository {
   MovieRepositoryImpl(this._api);
@@ -33,8 +34,14 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Future<Movies> getMovies(MovieQuery query) {
-    // TODO: implement getMovies
-    throw UnimplementedError();
+    return processApiCall(
+      module: "movie",
+      function: "getMovies",
+      call: () async {
+        final response = await _api.getNowPlayingMovies(query.toRequest().toJson());
+        return response.toModel();
+      }
+    );
   }
 
   @override

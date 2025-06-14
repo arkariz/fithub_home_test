@@ -21,4 +21,9 @@ abstract class MovieRemoteApi {
     @Path() int account,
     @Queries() Map<String, dynamic> query,
   );
+
+  @GET('/3/movie/now_playing')
+  Future<MoviesResponse> getNowPlayingMovies(
+    @Queries() Map<String, dynamic> query,
+  );
 }
