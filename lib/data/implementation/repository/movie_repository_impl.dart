@@ -36,7 +36,7 @@ class MovieRepositoryImpl extends BaseRepository implements MovieRepository {
       apiProcess: () async {
         return processApiCall(
           module: "movie",
-          function: "getMovieDetail",
+          function: "api.getMovieDetail",
           call: () async {
             final response = await _api.getMovieDetail(id);
             return response.toModel();
@@ -46,7 +46,7 @@ class MovieRepositoryImpl extends BaseRepository implements MovieRepository {
       localProcess: () async {
         return processBox(
           module: "movie",
-          function: "getMovieDetail",
+          function: "database.getMovieDetail",
           call: () async {
             final result = await _database.getMovieDetail(id);
             return result?.toModel();
@@ -54,7 +54,13 @@ class MovieRepositoryImpl extends BaseRepository implements MovieRepository {
         );
       },
       saveToLocal: (data) async {
+        processBox(
+          module: "movie",
+          function: "database.addMovieDetail",
+          call: () async {
         await _database.addMovieDetail(id, MovieDetailEntity.fromModel(data));
+          }
+        );
       }
     );
   }

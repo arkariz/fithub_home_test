@@ -3,26 +3,22 @@ import 'package:fithub_home_test/core/exceptions/exception.dart';
 class BaseRepository {
   Future<T> executeProcess<T>({
     required Future<T> Function() apiProcess,
+    required Future<T?> Function() localProcess,
     Future<void> Function(T data)? saveToLocal,
-    Future<T?> Function()? localProcess,
-    bool isLocalFirst = false,
-    bool forceRefresh = false,
+    bool isLoadCacheOnly = false,
   }) async {
-    if (isLocalFirst && !forceRefresh && localProcess != null) {
-      final localResult = await localProcess();
-      if (localResult != null) return localResult;
-    }
+    final localResult = await localProcess();
+    if (isLoadCacheOnly && localResult != null) return localResult;
 
     try {
       final apiResult = await apiProcess();
-      if (saveToLocal != null) {
-        await saveToLocal(apiResult);
+      if (saveToLocal == null) return apiResult;
+
+      if (apiResult != localResult) {
+        saveToLocal(apiResult);
       }
       return apiResult;
     } on NoInternetConnectionException {
-      if (localProcess == null) rethrow;
-      
-      final localResult = await localProcess();
       if (localResult == null) rethrow;
       return localResult;
     }
