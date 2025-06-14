@@ -4,8 +4,8 @@ import 'package:fithub_home_test/core/network/dio/dio_service.dart';
 import 'package:fithub_home_test/core/network/flavor/network_flavor.dart';
 import 'package:get_it/get_it.dart';
 
-void registerDioService(NetworkFlavor flavor) {
+void registerDioService() {
   GetIt.I
     ..registerLazySingleton<DioRequestInspector>(() => DioRequestInspector(isInspectorEnabled: true))
-    ..registerLazySingleton<Dio>(() => DioService().createService(flavor));
+    ..registerLazySingleton<Dio>(() => DioService().createService(GetIt.I<NetworkFlavor>()));
 }
