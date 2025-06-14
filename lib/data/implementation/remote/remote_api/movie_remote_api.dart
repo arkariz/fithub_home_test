@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:fithub_home_test/data/implementation/remote/response/favorite_response.dart';
+import 'package:fithub_home_test/data/implementation/remote/response/movies_response.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/http.dart';
 
@@ -13,5 +14,11 @@ abstract class MovieRemoteApi {
   Future<FavoriteResponse> updateFavorite(
     @Path() int account,
     @Body() Map<String, dynamic> body,
+  );
+
+  @GET('/3/account/{account}/favorite/movies')
+  Future<MoviesResponse> getFavoriteMovies(
+    @Path() int account,
+    @Queries() Map<String, dynamic> query,
   );
 }
