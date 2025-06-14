@@ -3,6 +3,7 @@ import 'package:fithub_home_test/core/exceptions/exception.dart';
 import 'package:fithub_home_test/data/api/query/favorite_query.dart';
 import 'package:fithub_home_test/data/api/query/get_favorite_query.dart';
 import 'package:fithub_home_test/data/api/query/movie_query.dart';
+import 'package:fithub_home_test/data/implementation/local/hive_database/movie_detail_database.dart';
 import 'package:fithub_home_test/data/implementation/remote/remote_api/movie_remote_api.dart';
 import 'package:fithub_home_test/data/implementation/remote/response/movies_response.dart';
 import 'package:fithub_home_test/data/implementation/repository/movie_repository_impl.dart';
@@ -14,17 +15,21 @@ import 'dummy/movie_detail_dummy.dart';
 import 'dummy/movies_dummy.dart';
 
 class MockMovieRemoteApi extends Mock implements MovieRemoteApi {}
+class MockMovieDetailDatabase extends Mock implements MovieDetailDatabase {}
 
 void main() {
   late MovieRepositoryImpl movieRepositoryImpl;
   final mockMovieRemoteApi = MockMovieRemoteApi();
+  final mockMovieDetailDatabase = MockMovieDetailDatabase();
 
   setUp(() {
-    movieRepositoryImpl = MovieRepositoryImpl(mockMovieRemoteApi);
+    registerFallbackValue(movieDetailEntityDummy);
+    movieRepositoryImpl = MovieRepositoryImpl(mockMovieRemoteApi, mockMovieDetailDatabase);
   });
 
   tearDown(() {
     reset(mockMovieRemoteApi);
+    reset(mockMovieDetailDatabase);
   });
 
   group('getFavoriteMovies', () { 
@@ -68,29 +73,65 @@ void main() {
 
   group('getMovieDetail', () { 
     const id = 1;
-    test('when success should return movie detail', () async {
+    test('when success should return movie detail and save to local', () async {
       //arrange
       when(() => mockMovieRemoteApi.getMovieDetail(any())).thenAnswer((_) async => movieDetailDummy);
+      when(() => mockMovieDetailDatabase.addMovieDetail(movieDetailDummy.id!, any())).thenAnswer((_) async {});
     
       //act
       final result = await movieRepositoryImpl.getMovieDetail(id);
     
       //assert
       expect(result, movieDetailDummy.toModel());
+      verify(() => mockMovieRemoteApi.getMovieDetail(id)).called(1);
+      verify(() => mockMovieDetailDatabase.addMovieDetail(id, any()));
     });
 
-    test('when failed should throw CoreException', () async {
+    test('when no internet connection and no local data should throw NoInternetConnectionException', () async {
       //arrange
       final connectionError = DioException.connectionError(requestOptions: RequestOptions(), reason: "no internet");
       final exception = NoInternetConnectionException(module: "movie", layer: "R", function: "getMovieDetail");
       when(() => mockMovieRemoteApi.getMovieDetail(any())).thenThrow(connectionError);
+      when(() => mockMovieDetailDatabase.getMovieDetail(id)).thenAnswer((_) async => null);
+    
+      //act & assert
+      try {
+        await movieRepositoryImpl.getMovieDetail(id);
+      } on NoInternetConnectionException catch (e) {
+        expect(e.toInfo().description, exception.toInfo().description);
+      }
+      verifyNever(() => mockMovieDetailDatabase.addMovieDetail(id, any()));
+    });
+
+    test('when no internet connection and local data is present should return local data', () async {
+      //arrange
+      final connectionError = DioException.connectionError(requestOptions: RequestOptions(), reason: "no internet");
+      when(() => mockMovieRemoteApi.getMovieDetail(any())).thenThrow(connectionError);
+      when(() => mockMovieDetailDatabase.getMovieDetail(id)).thenAnswer((_) async => movieDetailEntityDummy);
+    
+      //act
+      final result = await movieRepositoryImpl.getMovieDetail(id);
+
+      //assert
+      expect(result, movieDetailDummy.toModel());
+      verify(() => mockMovieRemoteApi.getMovieDetail(id)).called(1);
+      verify(() => mockMovieDetailDatabase.getMovieDetail(id)).called(1);
+      verifyNever(() => mockMovieDetailDatabase.addMovieDetail(id, any()));
+    });
+
+    test('When failed should throw CoreException', () async {
+      //arrange
+
+      when(() => mockMovieRemoteApi.getMovieDetail(any())).thenThrow(Exception());
+      when(() => mockMovieDetailDatabase.getMovieDetail(id)).thenAnswer((_) async => movieDetailEntityDummy);
     
       //act & assert
       try {
         await movieRepositoryImpl.getMovieDetail(id);
       } on CoreException catch (e) {
-        expect(e.toInfo().description, exception.toInfo().description);
+        expect(e, isA<CoreException>());
       }
+      verifyNever(() => mockMovieDetailDatabase.addMovieDetail(id, any()));
     });
   });
 

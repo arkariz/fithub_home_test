@@ -1,5 +1,6 @@
 
 
+import 'package:fithub_home_test/data/implementation/local/entity/movie_detail_entity.dart';
 import 'package:fithub_home_test/data/implementation/remote/response/movie_detail_response.dart';
 
 MovieDetailResponse movieDetailDummy = MovieDetailResponse(
@@ -22,3 +23,5 @@ MovieDetailResponse movieDetailDummy = MovieDetailResponse(
   voteAverage: 0,
   voteCount: 0,
 );
+
+MovieDetailEntity movieDetailEntityDummy = MovieDetailEntity.fromModel(movieDetailDummy.toModel());

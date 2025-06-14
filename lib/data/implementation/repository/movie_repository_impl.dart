@@ -33,22 +33,26 @@ class MovieRepositoryImpl extends BaseRepository implements MovieRepository {
   @override
   Future<MovieDetail> getMovieDetail(int id) {
     return executeProcess(
-      apiProcess: processApiCall(
-        module: "movie",
-        function: "getMovieDetail",
-        call: () async {
-          final response = await _api.getMovieDetail(id);
-          return response.toModel();
-        }
-      ),
-      localProcess: processBox(
-        module: "movie",
-        function: "getMovieDetail",
-        call: () async {
-          final result = await _database.getMovieDetail(id);
-          return result?.toModel();
-        }
-      ),
+      apiProcess: () async {
+        return processApiCall(
+          module: "movie",
+          function: "getMovieDetail",
+          call: () async {
+            final response = await _api.getMovieDetail(id);
+            return response.toModel();
+          }
+        );
+      },
+      localProcess: () async {
+        return processBox(
+          module: "movie",
+          function: "getMovieDetail",
+          call: () async {
+            final result = await _database.getMovieDetail(id);
+            return result?.toModel();
+          }
+        );
+      },
       saveToLocal: (data) async {
         await _database.addMovieDetail(id, MovieDetailEntity.fromModel(data));
       }
