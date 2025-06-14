@@ -1,7 +1,8 @@
+import 'package:fithub_home_test/data/implementation/local/entity/movies_entity.dart';
 import 'package:fithub_home_test/data/implementation/remote/response/movies_response.dart';
 
-MoviesResponse moviesDummy = MoviesResponse(
-  page: 1,
+MoviesResponse moviesDummy({int page = 1}) => MoviesResponse(
+  page: page,
   totalResults: 0,
   totalPages: 0,
   movies: [
@@ -39,3 +40,5 @@ MoviesResponse moviesDummy = MoviesResponse(
     ),
   ],
 );
+
+MoviesEntity moviesEntityDummy = MoviesEntity.fromModel(moviesDummy().toModel());

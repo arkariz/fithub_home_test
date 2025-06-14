@@ -3,9 +3,9 @@
 import 'package:fithub_home_test/data/implementation/local/entity/movie_detail_entity.dart';
 import 'package:fithub_home_test/data/implementation/remote/response/movie_detail_response.dart';
 
-MovieDetailResponse movieDetailDummy = MovieDetailResponse(
+MovieDetailResponse movieDetailDummy({int budget = 100000}) => MovieDetailResponse(
   adult: false,
-  budget: 100000,
+  budget: budget,
   genres: [GenreResponse(id: 1, name: 'name')],
   homepage: '',
   id: 1,
@@ -24,4 +24,4 @@ MovieDetailResponse movieDetailDummy = MovieDetailResponse(
   voteCount: 0,
 );
 
-MovieDetailEntity movieDetailEntityDummy = MovieDetailEntity.fromModel(movieDetailDummy.toModel());
+MovieDetailEntity movieDetailEntityDummy = MovieDetailEntity.fromModel(movieDetailDummy().toModel());

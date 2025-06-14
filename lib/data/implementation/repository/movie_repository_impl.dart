@@ -54,7 +54,13 @@ class MovieRepositoryImpl extends BaseRepository implements MovieRepository {
       },
       saveToLocal: (data) async {
         if (data.movies.isEmpty) return;
-        await _favoriteDatabase.addFavoriteMovies(query.page, MoviesEntity.fromModel(data));
+        processBox(
+          module: "movie",
+          function: "database.addFavoriteMovies",
+          call: () async {
+            await _favoriteDatabase.addFavoriteMovies(query.page, MoviesEntity.fromModel(data));
+          }
+        );
       }
     );
   }
@@ -129,6 +135,7 @@ class MovieRepositoryImpl extends BaseRepository implements MovieRepository {
         );
       },
       saveToLocal: (data) async {
+        if (data.movies.isEmpty) return;
         processBox(
           module: "movie",
           function: "database.addNowPlayingMovies",
