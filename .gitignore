@@ -44,3 +44,6 @@ app.*.map.json
 
 *pubspec.lock
 *.g.dart
+
+# FVM Version Cache
+.fvm/
