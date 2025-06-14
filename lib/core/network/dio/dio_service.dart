@@ -15,7 +15,7 @@ class DioService {
           connectTimeout: flavor.connectTimeout,
           receiveTimeout: flavor.receiveTimeout,
         )
-        .addHeaders(AuthHeader.requiredApikey)
+        .addHeaders(AuthHeader.requiredAuthorization)
         .addInterceptor(ExpiredTokenInterceptor())
         .addInterceptor(AuthHeaderInterceptor())
         .addInterceptor(LoggingInterceptor())

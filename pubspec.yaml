@@ -40,10 +40,15 @@ dependencies:
   get_it: ^8.0.3
   hive_ce_flutter: ^2.1.0
   flutter_secure_storage: ^9.2.4
+  equatable: ^2.0.7
+  retrofit: ^4.4.2
+  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  retrofit_generator: ^8.2.1
+  build_runner: ^2.3.3
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
