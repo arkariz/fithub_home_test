@@ -35,7 +35,7 @@ class NoInternetConnectionException extends CoreException {
   ExceptionInfo toInfo({String? title}) {
     return ExceptionInfo(
       title: title ?? "",
-      description: "Tidak ada koneksi Internet $code",
+      description: "No Internet Connection at $function $code",
     );
   }
 

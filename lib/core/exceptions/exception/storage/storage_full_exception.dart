@@ -33,7 +33,7 @@ class StorageFullException extends CoreException {
   ExceptionInfo toInfo({String? title}) {
     return ExceptionInfo(
       title: title ?? "",
-      description: "Terjadi kesalahan pada proses $function $code",
+      description: "Storage Full at $function $code",
     );
   }
 

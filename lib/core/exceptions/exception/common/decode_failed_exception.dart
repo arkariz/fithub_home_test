@@ -32,7 +32,7 @@ class DecodeFailedException extends CoreException {
   ExceptionInfo toInfo({String? title}) {
     return ExceptionInfo(
       title: title ?? "",
-      description: "Terjadi kesalahan pada proses enkoding/dekoding ketika melakukan $function $code",
+      description: "Failed encode/decode - Mismatched Type at $function $code",
     );
   }
 

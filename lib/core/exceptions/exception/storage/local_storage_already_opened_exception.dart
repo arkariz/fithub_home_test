@@ -33,7 +33,7 @@ class LocalStorageAlreadyOpenedException extends CoreException {
   ExceptionInfo toInfo({String? title}) {
     return ExceptionInfo(
       title: title ?? "",
-      description: "Terjadi kesalahan pada proses $function $code",
+      description: "Local Storage Already Opened at $function $code",
     );
   }
 

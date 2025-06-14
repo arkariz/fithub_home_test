@@ -42,7 +42,7 @@ class ApiErrorException extends CoreException {
 
     return ExceptionInfo(
       title: title ?? "",
-      description: "${response?.statusCode} ${data.message} pada proses $function $code",
+      description: "${response?.statusCode} ${data.message} at $function $code",
     );
   }
 

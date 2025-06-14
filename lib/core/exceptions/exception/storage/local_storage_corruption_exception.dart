@@ -33,7 +33,7 @@ class LocalStorageCorruptionException extends CoreException {
   ExceptionInfo toInfo({String? title}) {
     return ExceptionInfo(
       title: title ?? "",
-      description: "Terjadi kesalahan pada proses $function $code",
+      description: "Local Storage Corruption at $function $code",
     );
   }
 

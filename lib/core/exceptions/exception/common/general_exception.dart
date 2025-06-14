@@ -32,7 +32,7 @@ class GeneralException extends CoreException {
   ExceptionInfo toInfo({String? title}) {
     return ExceptionInfo(
       title: title ?? "",
-      description: "Terjadi kesalahan pada proses $function $code",
+      description: "Something went wrong at $function $code",
     );
   }
 

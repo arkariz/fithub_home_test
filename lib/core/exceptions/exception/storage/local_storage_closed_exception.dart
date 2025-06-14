@@ -33,7 +33,7 @@ class LocalStorageClosedException extends CoreException {
   ExceptionInfo toInfo({String? title}) {
     return ExceptionInfo(
       title: title ?? "",
-      description: "Terjadi kesalahan pada proses $function $code",
+      description: "Local Storage Closed at $function $code",
     );
   }
 

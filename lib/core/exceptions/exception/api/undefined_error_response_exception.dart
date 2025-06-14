@@ -37,7 +37,7 @@ class UndefinedErrorResponseException extends CoreException {
   ExceptionInfo toInfo({String? title}) {
     return ExceptionInfo(
       title: title ?? "",
-      description: "${response?.statusCode} Terjadi kesalahan pada proses $function $code",
+      description: "${response?.statusCode} Undefined Error Response at $function $code",
     );
   }
 
