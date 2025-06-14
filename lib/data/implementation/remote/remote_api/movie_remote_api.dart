@@ -26,4 +26,9 @@ abstract class MovieRemoteApi {
   Future<MoviesResponse> getNowPlayingMovies(
     @Queries() Map<String, dynamic> query,
   );
+
+  @GET('/3/search/movie')
+  Future<MoviesResponse> searchMovie(
+    @Queries() Map<String, dynamic> query,
+  );
 }

@@ -38,8 +38,13 @@ class MovieRepositoryImpl implements MovieRepository {
       module: "movie",
       function: "getMovies",
       call: () async {
-        final response = await _api.getNowPlayingMovies(query.toRequest().toJson());
-        return response.toModel();
+        if (query.keyword?.isNotEmpty ?? false) {
+          final response = await _api.searchMovie(query.toRequest().toJson());
+          return response.toModel();
+        } else {
+          final response = await _api.getNowPlayingMovies(query.toRequest().toJson());
+          return response.toModel();
+        }
       }
     );
   }

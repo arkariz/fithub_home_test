@@ -13,7 +13,7 @@ class MovieRequest extends Equatable {
   Map<String, dynamic> toJson() {
     return {
       'page': page,
-      if (keyword != null) 'keyword': keyword,
+      if (keyword != null) 'query': keyword,
     };
   }
 
