@@ -5,7 +5,7 @@ nextTypeId: 5
 types:
   MovieDetailEntity:
     typeId: 0
-    nextIndex: 18
+    nextIndex: 19
     fields:
       adult:
         index: 0
@@ -43,6 +43,8 @@ types:
         index: 16
       voteCount:
         index: 17
+      runtime:
+        index: 18
   GenreEntity:
     typeId: 1
     nextIndex: 2
