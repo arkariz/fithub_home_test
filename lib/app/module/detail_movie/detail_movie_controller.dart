@@ -1,7 +1,9 @@
 import 'package:fithub_home_test/app/common/widgets/d_snackbar.dart';
 import 'package:fithub_home_test/core/exceptions/exception.dart';
+import 'package:fithub_home_test/core/network/flavor/network_flavor.dart';
 import 'package:fithub_home_test/data/data.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 
 class DetailMovieController extends GetxController {
   DetailMovieController(this.movieRepository, this.snackbar);
@@ -40,7 +42,7 @@ class DetailMovieController extends GetxController {
     try {
       isLoading.value = true;
       final query = FavoriteQuery(
-        accountId: 22076012,
+        accountId: GetIt.I<NetworkFlavor>().accountId,
         mediaId: movieId,
         isFavorite: !isFavorite.value,
       );

@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:fithub_home_test/app/common/widgets/d_snackbar.dart';
 import 'package:fithub_home_test/core/exceptions/exception.dart';
+import 'package:fithub_home_test/core/network/flavor/network_flavor.dart';
 import 'package:fithub_home_test/data/data.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
 
 class FavoriteController extends GetxController {
   FavoriteController(
@@ -47,7 +49,7 @@ class FavoriteController extends GetxController {
   Future<void> _fetchMovies({int page = 1}) async {
     isLoading.value = true;
     try {
-      final query = GetFavoriteQuery(page: page, accountId: 22076012);
+      final query = GetFavoriteQuery(page: page, accountId: GetIt.I<NetworkFlavor>().accountId);
       final result = await movieRepository.getFavoriteMovies(query);
       moviePaging.value = result;
       movies.addAll(result.movies);
