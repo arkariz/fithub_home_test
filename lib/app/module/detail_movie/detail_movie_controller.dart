@@ -27,7 +27,6 @@ class DetailMovieController extends GetxController {
 
   Future<void> fetchDetailMovie({bool isRefresh = false}) async {
     isLoading.value = !isRefresh;
-    await Future.delayed(const Duration(seconds: 5));
     try {
       final result = await movieRepository.getMovieDetail(movieId);
       detailMovie.value = result;
