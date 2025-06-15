@@ -20,6 +20,7 @@ class MovieDetailEntity extends HiveObject {
   bool video;
   double voteAverage;
   int voteCount;
+  int runtime;
 
   MovieDetailEntity({
     required this.adult,
@@ -40,6 +41,7 @@ class MovieDetailEntity extends HiveObject {
     required this.video,
     required this.voteAverage,
     required this.voteCount,
+    required this.runtime,
   });
 
   factory MovieDetailEntity.fromModel(MovieDetail model) => MovieDetailEntity(
@@ -61,6 +63,7 @@ class MovieDetailEntity extends HiveObject {
     video: model.video,
     voteAverage: model.voteAverage,
     voteCount: model.voteCount,
+    runtime: model.runtime,
   );
 
   MovieDetail toModel() => MovieDetail(
@@ -82,6 +85,7 @@ class MovieDetailEntity extends HiveObject {
     video: video,
     voteAverage: voteAverage,
     voteCount: voteCount,
+    runtime: runtime,
   );
 }
 
