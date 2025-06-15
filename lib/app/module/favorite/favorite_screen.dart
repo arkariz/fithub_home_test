@@ -25,10 +25,16 @@ class FavoriteScreen extends GetView<FavoriteController> {
           padding: const EdgeInsets.only(left: 24, right: 24, top: 24),
           child: Obx(() => Stack(
             children: [
-              GridviewContainer(
-                gridviewItem: SliverChildBuilderDelegate(
-                  childCount: controller.movies.length,
-                  (context, index) => movieItem(index),
+              RefreshIndicator(
+                onRefresh: () async {
+                  controller.movies.clear();
+                  await controller.fetchMovies(isRefresh: true);
+                },
+                child: GridviewContainer(
+                  gridviewItem: SliverChildBuilderDelegate(
+                    childCount: controller.movies.length,
+                    (context, index) => movieItem(index),
+                  ),
                 ),
               ),
               Visibility(

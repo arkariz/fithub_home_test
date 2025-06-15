@@ -34,10 +34,16 @@ class NowPlayingScreen extends GetView<NowPlayingController> {
               onNotification: (notification) {
                 return controller.scrollListener(notification);
               },
-              child: GridviewContainer(
-                gridviewItem: SliverChildBuilderDelegate(
-                  childCount: controller.movies.length,
-                  (context, index) => movieItem(index),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  controller.movies.clear();
+                  await controller.fetchMovies(isRefresh: true);
+                },
+                child: GridviewContainer(
+                  gridviewItem: SliverChildBuilderDelegate(
+                    childCount: controller.movies.length,
+                    (context, index) => movieItem(index),
+                  ),
                 ),
               ),
             ),

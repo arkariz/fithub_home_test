@@ -26,7 +26,7 @@ class FavoriteController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _fetchMovies();
+    fetchMovies();
   }
 
   bool scrollListener(Object? notification) {
@@ -43,11 +43,11 @@ class FavoriteController extends GetxController {
 
   Future<void> onLoadMore() async {
     if (moviePaging.value.page == moviePaging.value.totalPages) return;
-    await _fetchMovies(page: moviePaging.value.page + 1);
+    await fetchMovies(page: moviePaging.value.page + 1);
   }
 
-  Future<void> _fetchMovies({int page = 1}) async {
-    isLoading.value = true;
+  Future<void> fetchMovies({int page = 1, bool isRefresh = false}) async {
+    isLoading.value = !isRefresh;
     try {
       final query = GetFavoriteQuery(page: page, accountId: GetIt.I<NetworkFlavor>().accountId);
       final result = await movieRepository.getFavoriteMovies(query);

@@ -24,7 +24,7 @@ class NowPlayingController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _fetchMovies();
+    fetchMovies();
   }
 
   bool scrollListener(Object? notification) {
@@ -41,16 +41,16 @@ class NowPlayingController extends GetxController {
 
   void onSearch(String query) {
     movies.clear();
-    _fetchMovies(search: query);
+    fetchMovies(search: query);
   }
 
   Future<void> onLoadMore() async {
     if (moviePaging.value.page == moviePaging.value.totalPages) return;
-    await _fetchMovies(page: moviePaging.value.page + 1);
+    await fetchMovies(page: moviePaging.value.page + 1);
   }
 
-  Future<void> _fetchMovies({int page = 1, String? search}) async {
-    isLoading.value = true;
+  Future<void> fetchMovies({int page = 1, String? search, bool isRefresh = false}) async {
+    isLoading.value = !isRefresh;
     try {
       final query = MovieQuery(page: page, keyword: search);
       final result = await movieRepository.getMovies(query);
