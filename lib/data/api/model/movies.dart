@@ -14,6 +14,13 @@ class Movies extends Equatable {
     required this.totalResults,
   });
 
+  factory Movies.empty() => const Movies(
+    page: 0,
+    movies: [],
+    totalPages: 0,
+    totalResults: 0,
+  );
+
   @override
   List<Object?> get props => [
     page,

@@ -20,6 +20,7 @@ class MovieDetailResponse {
   bool? video;
   double? voteAverage;
   int? voteCount;
+  int? runtime;
 
   MovieDetailResponse({
     this.adult,
@@ -40,6 +41,7 @@ class MovieDetailResponse {
     this.video,
     this.voteAverage,
     this.voteCount,
+    this.runtime,
   });
 
   factory MovieDetailResponse.fromJson(Map<String, dynamic> json) => MovieDetailResponse(
@@ -61,6 +63,7 @@ class MovieDetailResponse {
     video: json["video"],
     voteAverage: json["vote_average"]?.toDouble(),
     voteCount: json["vote_count"],
+    runtime: json["runtime"],
   );
 
   MovieDetail toModel() => MovieDetail(
@@ -82,6 +85,7 @@ class MovieDetailResponse {
     video: video ?? false,
     voteAverage: voteAverage ?? 0.0,
     voteCount: voteCount ?? 0,
+    runtime: runtime ?? 0,
   );
 }
 
